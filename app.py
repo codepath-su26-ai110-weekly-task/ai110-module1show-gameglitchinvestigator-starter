@@ -1,11 +1,12 @@
 import random
 import streamlit as st
-
+"""
 def get_range_for_difficulty(difficulty: str):
     if difficulty == "Easy":
         return 1, 20
     if difficulty == "Normal":
         return 1, 100
+    # FIXME: Logic breaks here
     if difficulty == "Hard":
         return 1, 50
     return 1, 100
@@ -32,7 +33,8 @@ def parse_guess(raw: str):
 def check_guess(guess, secret):
     if guess == secret:
         return "Win", "🎉 Correct!"
-
+    
+    # FIXME: Logic breaks here
     try:
         if guess > secret:
             return "Too High", "📈 Go HIGHER!"
@@ -63,7 +65,8 @@ def update_score(current_score: int, outcome: str, attempt_number: int):
         return current_score - 5
 
     return current_score
-
+"""
+from logic_utils import get_range_for_difficulty, parse_guess, check_guess, update_score
 st.set_page_config(page_title="Glitchy Guesser", page_icon="🎮")
 
 st.title("🎮 Game Glitch Investigator")
@@ -130,7 +133,7 @@ with col2:
     new_game = st.button("New Game 🔁")
 with col3:
     show_hint = st.checkbox("Show hint", value=True)
-
+# FIXME: Logic breaks here
 if new_game:
     st.session_state.attempts = 0
     st.session_state.secret = random.randint(1, 100)
@@ -154,7 +157,7 @@ if submit:
         st.error(err)
     else:
         st.session_state.history.append(guess_int)
-
+        # FIXME: Logic breaks here
         if st.session_state.attempts % 2 == 0:
             secret = str(st.session_state.secret)
         else:
