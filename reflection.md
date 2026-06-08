@@ -40,15 +40,19 @@ Document at least 3 bugs you found. Add rows as needed.
 ## 3. Debugging and testing your fixes
 
 - How did you decide whether a bug was really fixed?
+  I ran streamlit run app.py and played the game manually to confirm the fix worked in the live UI.
 - Describe at least one test you ran (manual or using pytest)  
   and what it showed you about your code.
+  I ran pytest tests after refactoring check_guess into logic_utils.py. The tests revealed that the original starter tests were comparing against a plain string like "Win", but check_guess actually returns a tuple ("Win", "🎉 Correct!"). This told me the tests themselves were broken, not just the game logic. I updated them to unpack the tuple with outcome, message = check_guess(...) and added two extra assertions to verify the hint text said "LOWER" or "HIGHER" in the right cases.
 - Did AI help you design or understand any tests? How?
+  Yes. I asked Claude to identify why the starter tests were failing. It spotted the tuple vs string mismatch immediately and suggested unpacking the return value. I verified this was correct by reading the check_guess function in logic_utils.py and confirming it always returns a two-element tuple.
 
 ---
 
 ## 4. What did you learn about Streamlit and state?
 
 - How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
+  Every time you interact with the app, Streamlit reruns the entire script from top to bottom, so regular variables reset on every click. st.session_state is a persistent dictionary that survives those reruns. I learned this the hard way with the New Game bug. The game stayed locked after a loss because status was never reset before Streamlit hit st.stop() on the next rerun.
 
 ---
 
@@ -56,5 +60,8 @@ Document at least 3 bugs you found. Add rows as needed.
 
 - What is one habit or strategy from this project that you want to reuse in future labs or projects?
   - This could be a testing habit, a prompting strategy, or a way you used Git.
+    Habit I want to reuse: I'll always add # FIXME comments before touching any code. Marking the exact line where the bug lives gave me a precise anchor when prompting the AI, instead of describing the problem vaguely, I could point directly to the broken line.
 - What is one thing you would do differently next time you work with AI on a coding task?
+  I think I can ask AI to point out bugs in the codebase first before in test them in the UI. So I can verify if the AI detects the bugs correctly.
 - In one or two sentences, describe how this project changed the way you think about AI generated code.
+  For this project, it's pretty good tho and made no mistakes.
